@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+.venv
+*.egg-info/
+dist/
+build/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Hackathon working docs (do not publish)
+AWS_BUILDER_POST.md
+DEMO_VOICEOVER_SCRIPT.md
+smart-sorting-plan.md
+ABOUT.md
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+*.log.*
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+data/events.db
+data/.bedrock_requests.txt
+
+# Node (if using React/Next.js)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.next/
+out/
+dist/
+
+# Test images (keep structure, ignore actual images)
+data/test_images/*.jpg
+data/test_images/*.jpeg
+data/test_images/*.png
+!data/test_images/.gitkeep
+
+# Temporary files
+*.tmp
+*.temp
+.cache/

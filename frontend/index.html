@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>EcoNova Guardian – Smart Sorting Assistant</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header>
+      <h1>EcoNova Guardian</h1>
+      <p class="tagline">An interactive Amazon Nova–powered agent that guides you to the correct bin</p>
+    </header>
+
+    <main>
+      <section class="input-section">
+        <div class="camera-start" id="cameraStart">
+          <button type="button" id="startCameraBtn" class="btn btn-primary btn-large">Start camera</button>
+          <p class="hint">Point at an item and classify in real time</p>
+        </div>
+
+        <div class="camera-live hidden" id="cameraLive">
+          <div class="camera-frame">
+            <video id="cameraVideo" autoplay playsinline muted></video>
+            <div class="camera-roi" aria-hidden="true"></div>
+          </div>
+          <div class="camera-actions">
+            <button type="button" id="pauseResumeBtn" class="btn btn-secondary">Pause</button>
+            <button type="button" id="lockBinZoneBtn" class="btn btn-secondary">Set Bin Zone</button>
+            <button type="button" id="stopCameraBtn" class="btn btn-secondary">Stop camera</button>
+          </div>
+          <p class="hint" id="roiHint">Tap "Set Bin Zone", then tap the bin opening area once.</p>
+          <p class="hint">Only the highlighted box is checked, and Bedrock is called only when that box changes.</p>
+        </div>
+      </section>
+
+      <section class="result-section hidden" id="resultSection">
+        <div class="result-loading hidden" id="resultLoading">Analyzing with Amazon Nova…</div>
+        <div class="result-content hidden" id="resultContent">
+          <div class="bin-viz" id="binViz">
+            <div class="bin-compartment" data-category="WASTE">
+              <div class="bin-visual"><div class="bin-body"></div><div class="bin-lid"></div></div>
+              <span>Waste</span>
+            </div>
+            <div class="bin-compartment" data-category="RECYCLING">
+              <div class="bin-visual"><div class="bin-body"></div><div class="bin-lid"></div></div>
+              <span>Recycling</span>
+            </div>
+            <div class="bin-compartment" data-category="COMPOST">
+              <div class="bin-visual"><div class="bin-body"></div><div class="bin-lid"></div></div>
+              <span>Compost</span>
+            </div>
+          </div>
+          <div class="result-card">
+            <div class="category-pill" id="categoryPill"></div>
+            <p class="item-name" id="itemName"></p>
+            <p class="confidence" id="confidenceText"></p>
+            <p class="reasoning" id="reasoning"></p>
+            <p class="tips" id="tips"></p>
+          </div>
+          <div class="clarification-box hidden" id="clarificationBox">
+            <p class="clarification-question" id="clarificationQuestion"></p>
+            <div class="clarification-options" id="clarificationOptions"></div>
+          </div>
+          <div class="feedback-box" id="feedbackBox">
+            <p>Was this correct?</p>
+            <div class="feedback-buttons">
+              <button type="button" class="btn btn-success feedback-yes">Yes</button>
+              <button type="button" class="btn btn-danger feedback-no">No – I'll pick the right bin</button>
+            </div>
+            <div class="feedback-correct hidden" id="feedbackCorrect">
+              <p>Select the correct bin:</p>
+              <button type="button" class="btn bin-option" data-category="WASTE">Waste</button>
+              <button type="button" class="btn bin-option" data-category="RECYCLING">Recycling</button>
+              <button type="button" class="btn bin-option" data-category="COMPOST">Compost</button>
+            </div>
+          </div>
+          <div class="thank-you-msg hidden" id="thankYouMsg"></div>
+        </div>
+      </section>
+
+      <section class="stats-section">
+        <a href="#" id="statsLink">View analytics</a>
+      </section>
+    </main>
+
+    <footer>
+      <p>Powered by Amazon Nova · Stay within your $100 AWS credits</p>
+    </footer>
+  </div>
+
+  <div class="modal hidden" id="statsModal">
+    <div class="modal-content">
+      <h2>Analytics</h2>
+      <div id="statsBody"></div>
+      <button type="button" class="btn btn-secondary" id="closeStatsBtn">Close</button>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
