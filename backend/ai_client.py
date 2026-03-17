@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import re
+from datetime import date
 from pathlib import Path
 
 import boto3
@@ -18,25 +19,27 @@ from config import (
 )
 from prompts import SYSTEM_PROMPT, user_prompt
 
-# Simple in-memory request counter (reset on restart); for dev guardrail only
-_bedrock_request_count = 0
 _count_file = Path(__file__).resolve().parent.parent / "data" / ".bedrock_requests.txt"
 
 
 def _get_and_increment_count() -> int:
-    global _bedrock_request_count
+    """Return today's request count after incrementing. Resets automatically each calendar day."""
+    today = str(date.today())
+    count = 0
     try:
         if _count_file.exists():
-            _bedrock_request_count = int(_count_file.read_text().strip())
+            parts = _count_file.read_text().strip().split(",")
+            if len(parts) == 2 and parts[0] == today:
+                count = int(parts[1])
     except Exception:
         pass
-    _bedrock_request_count += 1
+    count += 1
     try:
         _count_file.parent.mkdir(parents=True, exist_ok=True)
-        _count_file.write_text(str(_bedrock_request_count))
+        _count_file.write_text(f"{today},{count}")
     except Exception:
         pass
-    return _bedrock_request_count
+    return count
 
 
 def _create_client():
