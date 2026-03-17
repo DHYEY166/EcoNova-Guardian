@@ -2,6 +2,8 @@
 Amazon Bedrock / Nova client for image classification.
 Uses Converse API with image + system prompt. Logs request count for $100 credit awareness.
 """
+from __future__ import annotations
+
 import json
 import re
 from pathlib import Path

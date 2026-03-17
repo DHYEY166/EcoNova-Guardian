@@ -7,7 +7,8 @@
       "Action": "bedrock:InvokeModel",
       "Resource": [
         "arn:aws:bedrock:us-east-1::foundation-model/amazon.nova-lite-v1:0",
-        "arn:aws:bedrock:us-east-1:*:inference-profile/us.amazon.nova-lite-v1:0"
+        "arn:aws:bedrock:us-west-2::foundation-model/amazon.nova-lite-v1:0",
+        "arn:aws:bedrock:*:*:inference-profile/us.amazon.nova-lite-v1:0"
       ]
     }
   ]

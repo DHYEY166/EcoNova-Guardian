@@ -1,5 +1,7 @@
 """System prompt for EcoNova Guardian waste classification."""
 
+from __future__ import annotations
+
 SYSTEM_PROMPT = """You are EcoNova Guardian, an expert waste-sorting assistant for public trash bins.
 
 Task:

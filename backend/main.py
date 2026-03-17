@@ -2,6 +2,8 @@
 EcoNova Guardian – Agentic Waste Sorting Assistant
 FastAPI backend: /health, /classify, /feedback, /stats
 """
+from __future__ import annotations
+
 import sys
 from datetime import datetime, timezone
 

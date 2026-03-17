@@ -1,6 +1,8 @@
 """
 SQLite storage for classification events and feedback. Stays local to avoid AWS DB cost.
 """
+from __future__ import annotations
+
 import json
 import sqlite3
 import uuid

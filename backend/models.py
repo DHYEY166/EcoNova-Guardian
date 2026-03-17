@@ -1,4 +1,6 @@
 """Pydantic request/response schemas for EcoNova Guardian API."""
+from __future__ import annotations
+
 from typing import Literal
 
 from pydantic import BaseModel, Field

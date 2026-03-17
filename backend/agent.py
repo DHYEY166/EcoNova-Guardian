@@ -1,6 +1,8 @@
 """
 Agent logic: confidence thresholds and decision mode (DIRECT / UNCERTAIN / NEEDS_CLARIFICATION).
 """
+from __future__ import annotations
+
 from config import CONF_HIGH, CONF_MED
 
 # Predefined clarification options for low-confidence cases (avoids extra Nova call)
