@@ -1,0 +1,23 @@
+# /etc/systemd/system/econova.service
+# Copy to /etc/systemd/system/econova.service on the EC2 instance
+# Then: sudo systemctl daemon-reload && sudo systemctl enable --now econova
+
+[Unit]
+Description=EcoNova Guardian FastAPI backend
+After=network.target
+
+[Service]
+Type=simple
+User=ec2-user
+WorkingDirectory=/home/ec2-user/app/backend
+ExecStart=/home/ec2-user/.local/bin/uvicorn main:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=5
+
+# No AWS keys – credentials come from the EC2 IAM Instance Role automatically
+# Only set non-secret config here
+Environment=AWS_REGION=us-east-1
+Environment=BEDROCK_MODEL_ID=us.amazon.nova-lite-v1:0
+
+[Install]
+WantedBy=multi-user.target
