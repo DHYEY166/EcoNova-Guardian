@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from typing import Literal
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -35,6 +36,12 @@ class FeedbackResponse(BaseModel):
     message: str
 
 
+# --- Traffic (anonymous) ---
+class VisitRequest(BaseModel):
+    """POST /visit — browser-generated UUID, one successful ping per UTC day."""
+    visitor_id: UUID
+
+
 # --- Stats ---
 class StatsResponse(BaseModel):
     """Response from GET /stats."""
@@ -44,3 +51,6 @@ class StatsResponse(BaseModel):
     confusion_matrix: list[list[int]]
     top_confusing_items: list[dict]
     items_diverted_from_landfill: int
+    visitors_today: int = 0
+    visitors_last_7_days: int = 0
+    visitors_all_time: int = 0

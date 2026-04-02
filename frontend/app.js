@@ -50,6 +50,28 @@ const clarificationOptions = document.getElementById('clarificationOptions');
 const feedbackBox = document.getElementById('feedbackBox');
 const feedbackCorrect = document.getElementById('feedbackCorrect');
 const thankYouMsg = document.getElementById('thankYouMsg');
+// ----- Anonymous traffic (one POST per browser per UTC day; $0, stays in SQLite) -----
+const VISITOR_STORAGE_ID = 'econova_vid';
+const VISITOR_STORAGE_DAY = 'econova_visit_day';
+(async () => {
+  try {
+    if (!window.crypto?.randomUUID) return;
+    let vid = localStorage.getItem(VISITOR_STORAGE_ID);
+    if (!vid) {
+      vid = crypto.randomUUID();
+      localStorage.setItem(VISITOR_STORAGE_ID, vid);
+    }
+    const todayUtc = new Date().toISOString().slice(0, 10);
+    if (localStorage.getItem(VISITOR_STORAGE_DAY) === todayUtc) return;
+    const res = await fetch(`${API_BASE}/visit`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ visitor_id: vid }),
+    });
+    if (res.ok) localStorage.setItem(VISITOR_STORAGE_DAY, todayUtc);
+  } catch (_) { /* ignore */ }
+})();
+
 const statsLink = document.getElementById('statsLink');
 const statsModal = document.getElementById('statsModal');
 const statsBody = document.getElementById('statsBody');

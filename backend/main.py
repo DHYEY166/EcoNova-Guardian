@@ -1,6 +1,6 @@
 """
 EcoNova Guardian – Agentic Waste Sorting Assistant
-FastAPI backend: /health, /classify, /feedback, /stats
+FastAPI backend: /health, /classify, /feedback, /visit, /stats
 """
 from __future__ import annotations
 
@@ -17,10 +17,11 @@ from database import (
     generate_interaction_id,
     init_db,
     log_event,
+    record_daily_visit,
     record_feedback,
     get_stats,
 )
-from models import ClassifyResponse, FeedbackRequest, FeedbackResponse
+from models import ClassifyResponse, FeedbackRequest, FeedbackResponse, VisitRequest
 
 app = FastAPI(
     title="EcoNova Guardian API",
@@ -97,6 +98,13 @@ async def classify(
         clarification_question=out.get("clarification_question"),
         clarification_options=out.get("clarification_options"),
     )
+
+
+@app.post("/visit")
+def visit(body: VisitRequest):
+    """Record one anonymous visitor hit per UTC day (browser sends stable UUID)."""
+    record_daily_visit(str(body.visitor_id))
+    return {"status": "ok"}
 
 
 @app.post("/feedback", response_model=FeedbackResponse)

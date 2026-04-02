@@ -3,6 +3,7 @@ SQLite storage for classification events and feedback. Stays local to avoid AWS 
 """
 from __future__ import annotations
 
+import datetime
 import json
 import sqlite3
 import uuid
@@ -35,6 +36,26 @@ def init_db():
         c.execute("""
             CREATE INDEX IF NOT EXISTS idx_events_timestamp ON events(timestamp)
         """)
+        c.execute("""
+            CREATE TABLE IF NOT EXISTS visitor_hits (
+                visitor_id TEXT NOT NULL,
+                day TEXT NOT NULL,
+                PRIMARY KEY (visitor_id, day)
+            )
+        """)
+        c.execute("""
+            CREATE INDEX IF NOT EXISTS idx_visitor_hits_day ON visitor_hits(day)
+        """)
+
+
+def record_daily_visit(visitor_id: str) -> None:
+    """One row per anonymous visitor per UTC day; idempotent."""
+    day = datetime.datetime.now(datetime.timezone.utc).date().isoformat()
+    with _conn() as c:
+        c.execute(
+            "INSERT OR IGNORE INTO visitor_hits (visitor_id, day) VALUES (?, ?)",
+            (visitor_id, day),
+        )
 
 
 def log_event(
@@ -92,6 +113,9 @@ def record_feedback(interaction_id: str, final_category: str, was_correct: bool)
 
 
 def get_stats() -> dict:
+    today = datetime.datetime.now(datetime.timezone.utc).date()
+    today_s = today.isoformat()
+    week_start = (today - datetime.timedelta(days=6)).isoformat()
     with _conn() as c:
         total = c.execute("SELECT COUNT(*) FROM events").fetchone()[0]
         with_feedback = c.execute("SELECT COUNT(*) FROM events WHERE was_correct IS NOT NULL").fetchone()[0]
@@ -134,6 +158,20 @@ def get_stats() -> dict:
             LIMIT 10
             """
         ).fetchall()]
+    with _conn() as c:
+        visitors_today = c.execute(
+            "SELECT COUNT(*) FROM visitor_hits WHERE day = ?", (today_s,)
+        ).fetchone()[0]
+        visitors_7d = c.execute(
+            """
+            SELECT COUNT(DISTINCT visitor_id) FROM visitor_hits
+            WHERE day >= ? AND day <= ?
+            """,
+            (week_start, today_s),
+        ).fetchone()[0]
+        visitors_all_time = c.execute(
+            "SELECT COUNT(DISTINCT visitor_id) FROM visitor_hits"
+        ).fetchone()[0]
     return {
         "total_items": total,
         "accuracy_overall": round(accuracy, 2),
@@ -141,6 +179,9 @@ def get_stats() -> dict:
         "confusion_matrix": confusion,
         "top_confusing_items": top,
         "items_diverted_from_landfill": diverted,
+        "visitors_today": visitors_today,
+        "visitors_last_7_days": visitors_7d,
+        "visitors_all_time": visitors_all_time,
     }
 
 
