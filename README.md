@@ -10,10 +10,10 @@ The app includes smart frame gating to reduce unnecessary Bedrock calls, feedbac
 
 ---
 
-## What Is Live Now
+## Deployment
 
-Production URL (HTTPS):
-- https://54-164-140-252.sslip.io
+Deploy to your own EC2 instance following the steps in [AWS Deployment](#aws-deployment-initial-setup) below.
+Once running, your app will be available at `https://<your-ec2-ip>.sslip.io` (with certbot TLS).
 
 Current hosting stack:
 - EC2 (Amazon Linux 2023)
@@ -38,7 +38,7 @@ Current hosting stack:
 ## Project Structure
 
 ```text
-Amazon Nova AI Hackathon/
+EcoNova-Guardian/
 ├── README.md
 ├── activate_envs.sh
 ├── backend/
@@ -76,7 +76,7 @@ Amazon Nova AI Hackathon/
 ### Quick start
 
 ```bash
-cd "/Users/dhyeydesai/Desktop/Amazon Nova AI Hackathon"
+cd EcoNova-Guardian
 source activate_envs.sh
 ```
 
