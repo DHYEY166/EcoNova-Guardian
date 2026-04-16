@@ -1,12 +1,23 @@
 # EcoNova Guardian
 
+![Python](https://img.shields.io/badge/python-3.10%2B-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![AWS Bedrock](https://img.shields.io/badge/AWS-Bedrock%20%7C%20Nova%20Lite-orange)
+![FastAPI](https://img.shields.io/badge/backend-FastAPI-teal)
+
 Real-time waste classification powered by Amazon Nova on AWS Bedrock.
 Point a camera at an item and get a bin recommendation:
-- WASTE
-- RECYCLING
-- COMPOST
+- **WASTE**
+- **RECYCLING**
+- **COMPOST**
 
 The app includes smart frame gating to reduce unnecessary Bedrock calls, feedback capture, and simple analytics.
+
+---
+
+## Demo
+
+![EcoNova Guardian](EcoNova%20Guardia.png)
 
 ---
 
@@ -61,6 +72,7 @@ EcoNova-Guardian/
 │   ├── bootstrap.sh
 │   └── deploy_update.sh
 └── data/
+    └── test_images/     # gitkeep only; drop test images here locally
 ```
 
 ---
@@ -75,10 +87,18 @@ EcoNova-Guardian/
 
 ### Quick start
 
+> **macOS only.** `activate_envs.sh` activates the backend venv, auto-installs
+> dependencies when `requirements.txt` changes, opens the frontend server in a
+> new Terminal window, and starts the FastAPI backend — all in one step.
+
 ```bash
 cd EcoNova-Guardian
 source activate_envs.sh
 ```
+
+Flags:
+- `--force-install` — re-run `pip install` even if requirements haven't changed
+- `--dev-reload` — start uvicorn with `--reload` for live code reloading
 
 Then open:
 - http://localhost:8080
