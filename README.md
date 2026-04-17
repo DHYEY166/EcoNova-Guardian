@@ -19,8 +19,6 @@ The app includes smart frame gating to reduce unnecessary Bedrock calls, feedbac
 
 [![EcoNova Guardian Demo](https://img.youtube.com/vi/oic2QKJ9irc/maxresdefault.jpg)](https://youtu.be/oic2QKJ9irc)
 
-![EcoNova Guardian](EcoNova%20Guardia.png)
-
 ---
 
 ## Deployment
